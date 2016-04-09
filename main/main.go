@@ -10,7 +10,8 @@ func main()  {
 		w.Header().Add("Cotent type", "text/html")
 		tmpl,err:= template.New("test").Parse(doc)
 		if err == nil{
-			tmpl.Execute(w,req.URL.Path)
+			context:= Context{Message:"Hello world",Title:"Title of Hello world"}
+			tmpl.Execute(w,context)
 		}
 	})
 	http.ListenAndServe(":8080",nil)
@@ -20,12 +21,15 @@ const doc = `
 <!DOCTYPE html>
 <html>
 <head>
-<title> {{.}}</title>
+<title> {{.Title}}</title>
 </head>
 <body>
-<h1> {{.}}</h1>
+<h1> {{.Message}}</h1>
 </body>
 </html>
 `
 
-
+type Context struct {
+	Title string
+	Message string
+}
